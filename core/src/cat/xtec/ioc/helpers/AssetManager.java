@@ -14,8 +14,8 @@ public class AssetManager {
     // Sprite Sheet
     public static Texture sheet;
 
-    // Nau i fons
-    public static TextureRegion spacecraft, spacecraftDown, spacecraftUp, background;
+    // Nau i fons i bala
+    public static TextureRegion spacecraft, spacecraftDown, spacecraftUp, background, bala;
 
     // Asteroid
     public static TextureRegion[] asteroid;
@@ -25,9 +25,11 @@ public class AssetManager {
     public static TextureRegion[] explosion;
     public static Animation explosionAnim;
 
+
     // Sons
     public static Sound explosionSound;
     public static Music music;
+    public static Sound disparoBala;
 
     // Font
     public static BitmapFont font;
@@ -64,6 +66,9 @@ public class AssetManager {
         // Creem els 16 estats de l'explosió
         explosion = new TextureRegion[16];
 
+        bala = new TextureRegion(sheet, 519, 293, 22, 20);
+        bala.flip(false, true);
+
         // Carreguem els 16 estats de l'explosió
         int index = 0;
         for (int i = 0; i < 2; i++) {
@@ -88,6 +93,10 @@ public class AssetManager {
         music = Gdx.audio.newMusic(Gdx.files.internal("sounds/Afterburner.ogg"));
         music.setVolume(0.2f);
         music.setLooping(true);
+
+        //Disparo laser
+        disparoBala = Gdx.audio.newSound(Gdx.files.internal("sounds/XWing-Laser.wav"));
+
 
         /******************************* Text *************************************/
         // Font space

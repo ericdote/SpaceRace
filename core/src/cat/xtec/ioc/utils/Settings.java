@@ -1,6 +1,7 @@
 package cat.xtec.ioc.utils;
 
-public class Settings {
+public class
+Settings {
 
     // Mida del joc, s'escalarà segons la necessitat
     public static final int GAME_WIDTH = 240;

@@ -51,6 +51,9 @@ public class InputHandler implements InputProcessor {
         {
             spacecraft.goBack();
             return true;
+        } else if(keycode == Input.Keys.SPACE){
+            spacecraft.shoot();
+            return true;
         }
 
         else

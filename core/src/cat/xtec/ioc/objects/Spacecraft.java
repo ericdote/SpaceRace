@@ -5,6 +5,7 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.Touchable;
 
 import cat.xtec.ioc.helpers.AssetManager;
@@ -22,15 +23,17 @@ public class Spacecraft extends Actor {
     private float velocityX, velocityY;
     private int width, height;
     private int direction;
+    private Stage stage;
 
     private Rectangle collisionRect;
 
-    public Spacecraft(float x, float y, int width, int height) {
+    public Spacecraft(float x, float y, int width, int height, Stage stage) {
 
         // Inicialitzem els arguments segons la crida del constructor
         this.width = width;
         this.height = height;
         position = new Vector2(x, y);
+        this.stage = stage;
 
         // Inicialitzem la spacecraft a l'estat normal
         direction = SPACECRAFT_STRAIGHT;
@@ -148,5 +151,16 @@ public class Spacecraft extends Actor {
 
     public Rectangle getCollisionRect() {
         return collisionRect;
+    }
+
+    public void shoot() {
+        for (Actor actor : stage.getActors()
+             ) {
+            if(actor.getName() != null && actor.getName().equalsIgnoreCase("spacecraft")){
+                stage.addActor(new Bala(actor.getX()+actor.getWidth(), actor.getY()+actor.getHeight()/2, 22, 20));
+                AssetManager.disparoBala.play();
+                break;
+            }
+        }
     }
 }

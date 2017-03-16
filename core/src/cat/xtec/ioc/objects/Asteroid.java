@@ -19,10 +19,11 @@ public class Asteroid extends Scrollable {
     Random r;
 
     int assetAsteroid;
+    float velocitiY;
 
-    public Asteroid(float x, float y, float width, float height, float velocity) {
+    public Asteroid(float x, float y, float width, float height, float velocity, float velocitiY) {
         super(x, y, width, height, velocity);
-
+        this.velocitiY = velocitiY;
         // Creem el cercle
         collisionCircle = new Circle();
 
@@ -58,7 +59,7 @@ public class Asteroid extends Scrollable {
     @Override
     public void act(float delta) {
         super.act(delta);
-
+        position.y += velocitiY*delta;
         // Actualitzem el cercle de col·lisions (punt central de l'asteroid i el radi.
         collisionCircle.set(position.x + width / 2.0f, position.y + width / 2.0f, width / 2.0f);
 
@@ -76,6 +77,7 @@ public class Asteroid extends Scrollable {
         position.y =  new Random().nextInt(Settings.GAME_HEIGHT - (int) height);
 
         assetAsteroid = r.nextInt(15);
+        this.velocitiY = -50 + r.nextInt(100);
         setOrigin();
     }
 

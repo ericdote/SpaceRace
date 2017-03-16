@@ -44,6 +44,10 @@ public class GameScreen implements Screen {
     // Preparem el textLayout per escriure text
     private GlyphLayout textLayout;
     private GlyphLayout puntuacio;
+    private GlyphLayout facil;
+    private GlyphLayout medio;
+    private GlyphLayout dificil;
+    private int puntuacioJoc;
 
     public GameScreen(Batch prevBatch, Viewport prevViewport) {
 
@@ -59,7 +63,7 @@ public class GameScreen implements Screen {
         batch = stage.getBatch();
 
         // Creem la nau i la resta d'objectes
-        spacecraft = new Spacecraft(Settings.SPACECRAFT_STARTX, Settings.SPACECRAFT_STARTY, Settings.SPACECRAFT_WIDTH, Settings.SPACECRAFT_HEIGHT);
+        spacecraft = new Spacecraft(Settings.SPACECRAFT_STARTX, Settings.SPACECRAFT_STARTY, Settings.SPACECRAFT_WIDTH, Settings.SPACECRAFT_HEIGHT, stage);
         scrollHandler = new ScrollHandler();
 
         // Afegim els actors a l'stage
@@ -70,8 +74,15 @@ public class GameScreen implements Screen {
 
         // Iniciem el GlyphLayout
         textLayout = new GlyphLayout();
-        textLayout.setText(AssetManager.font, "Are you\nready?");
+        textLayout.setText(AssetManager.font, "Are you ready?");
+        facil = new GlyphLayout();
+        facil.setText(AssetManager.font, "Facil");
+        medio = new GlyphLayout();
+        medio.setText(AssetManager.font, "Medio");
+        dificil = new GlyphLayout();
+        dificil.setText(AssetManager.font, "Dificil");
         puntuacio = new GlyphLayout();
+        puntuacioJoc = 0;
         currentState = GameState.READY;
 
 
@@ -150,16 +161,17 @@ public class GameScreen implements Screen {
                 break;
 
         }
-
         //drawElements();
-
     }
 
     private void updateReady() {
 
         // Dibuixem el text al centre de la pantalla
         batch.begin();
-        AssetManager.font.draw(batch, textLayout, (Settings.GAME_WIDTH / 2) - textLayout.width / 2, (Settings.GAME_HEIGHT / 2) - textLayout.height / 2);
+        AssetManager.font.draw(batch, textLayout, 50, 2);
+        AssetManager.font.draw(batch, facil, Settings.GAME_WIDTH/2-20, 30);
+        AssetManager.font.draw(batch, medio, Settings.GAME_WIDTH/2-20, 60);
+        AssetManager.font.draw(batch, dificil, Settings.GAME_WIDTH/2-20, 90);
         //stage.addActor(textLbl);
         batch.end();
 
@@ -168,14 +180,17 @@ public class GameScreen implements Screen {
     private void updateRunning(float delta) {
         stage.act(delta);
         batch.begin();
-        puntuacio.setText(AssetManager.fontPuntuacio, "PRINGAO");
-        AssetManager.fontPuntuacio.draw(batch, puntuacio, Settings.GAME_WIDTH-40, 3);
+        puntuacio.setText(AssetManager.fontPuntuacio, "Puntuacion : " + puntuacioJoc++);
+        AssetManager.fontPuntuacio.draw(batch, puntuacio, Settings.GAME_WIDTH-80, 2);
 
         if (scrollHandler.collides(spacecraft)) {
             // Si hi ha hagut col·lisió: Reproduïm l'explosió i posem l'estat a GameOver
+            String mostraPuntuacio = Integer.toString(puntuacioJoc);
+            puntuacioJoc = 0;
             AssetManager.explosionSound.play();
             stage.getRoot().findActor("spacecraft").remove();
-            textLayout.setText(AssetManager.font, "Game Over\n ");
+            textLayout.setText(AssetManager.font, "Game Over\n" +
+                    "Puntuacion final : " + mostraPuntuacio);
             currentState = GameState.GAMEOVER;
         }
         batch.end();

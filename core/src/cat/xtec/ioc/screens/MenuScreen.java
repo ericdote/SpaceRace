@@ -3,6 +3,7 @@ package cat.xtec.ioc.screens;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.scenes.scene2d.actions.RepeatAction;
@@ -16,15 +17,17 @@ import cat.xtec.ioc.helpers.AssetManager;
 import cat.xtec.ioc.utils.Settings;
 
 
-public class SplashScreen implements Screen {
+public class MenuScreen implements Screen {
 
     private Stage stage;
     private SpaceRace game;
-
+    private boolean touch = false;
     private Label.LabelStyle textStyle;
-    private Label textLbl;
+    private Label facil;
+    private Label medio;
+    private Label dificil;
 
-    public SplashScreen(SpaceRace game) {
+    public MenuScreen(SpaceRace game) {
 
         this.game = game;
 
@@ -43,26 +46,37 @@ public class SplashScreen implements Screen {
         // Afegim el fons
         stage.addActor(new Image(AssetManager.background));
 
-        // Creem l'estil de l'etiqueta i l'etiqueta
-        textStyle = new Label.LabelStyle(AssetManager.font, null);
-        textLbl = new Label("SpaceRace", textStyle);
-
-        // Creem el contenidor necessari per aplicar-li les accions
-        Container container = new Container(textLbl);
-        container.setTransform(true);
-        container.center();
-        container.setPosition(Settings.GAME_WIDTH / 2, Settings.GAME_HEIGHT / 4);
-
-        // Afegim les accions de escalar: primer es fa gran i després torna a l'estat original ininterrompudament
-        container.addAction(Actions.repeat(RepeatAction.FOREVER, Actions.sequence(Actions.scaleTo(1.5f, 1.5f, 1), Actions.scaleTo(1, 1, 1))));
-        stage.addActor(container);
-
         // Creem la imatge de la nau i li assignem el moviment en horitzontal
         Image spacecraft = new Image(AssetManager.spacecraft);
-        float y = Settings.GAME_HEIGHT / 3 + textLbl.getHeight();
+        float y = Settings.GAME_HEIGHT / 3;
         spacecraft.addAction(Actions.repeat(RepeatAction.FOREVER, Actions.sequence(Actions.moveTo(0 - spacecraft.getWidth(), y), Actions.moveTo(Settings.GAME_WIDTH, y, 5))));
 
         stage.addActor(spacecraft);
+
+        // Creem l'estil de l'etiqueta i l'etiqueta
+        textStyle = new Label.LabelStyle(AssetManager.font, null);
+        facil = new Label("Facil", textStyle);
+        medio = new Label("Medio", textStyle);
+        dificil = new Label("Dificil", textStyle);
+
+        // Creem el contenidor necessari per aplicar-li les accions
+        Container containerFacil = new Container(facil);
+        containerFacil.setTransform(true);
+        containerFacil.center();
+        containerFacil.setPosition(Settings.GAME_WIDTH/2+10, 30);
+        Container containerMedio = new Container(medio);
+        containerMedio.setTransform(true);
+        containerMedio.center();
+        containerMedio.setPosition(Settings.GAME_WIDTH/2+10, 60);
+        Container containerDificil = new Container(dificil);
+        containerDificil.setTransform(true);
+        containerDificil.center();
+        containerDificil.setPosition(Settings.GAME_WIDTH/2+10, 90);
+        //containerFacil.addAction(Actions.touchable(true));
+        stage.addActor(containerFacil);
+        stage.addActor(containerMedio);
+        stage.addActor(containerDificil);
+
 
 
     }
@@ -79,9 +93,11 @@ public class SplashScreen implements Screen {
         stage.act(delta);
 
         // Si es fa clic en la pantalla, canviem la pantalla
-        if (Gdx.input.isTouched()) {
-            game.setScreen(new MenuScreen(game));
+        if (Gdx.input.isTouched() && touch == true) {
+            game.setScreen(new GameScreen(stage.getBatch(), stage.getViewport()));
             dispose();
+        } else {
+            touch = false;
         }
         //gdxinput.x
     }

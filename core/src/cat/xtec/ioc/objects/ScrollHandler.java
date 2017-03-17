@@ -2,6 +2,7 @@ package cat.xtec.ioc.objects;
 
 import com.badlogic.gdx.scenes.scene2d.Group;
 
+import java.beans.Visibility;
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -97,13 +98,13 @@ public class ScrollHandler extends Group {
         return false;
     }
 
+
     public void reset() {
 
         // Posem el primer asteroid fora de la pantalla per la dreta
         asteroids.get(0).reset(Settings.GAME_WIDTH);
         // Calculem les noves posicions de la resta d'asteroids.
         for (int i = 1; i < asteroids.size(); i++) {
-
             asteroids.get(i).reset(asteroids.get(i - 1).getTailX() + Settings.ASTEROID_GAP);
 
         }

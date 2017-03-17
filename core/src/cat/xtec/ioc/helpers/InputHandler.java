@@ -52,7 +52,7 @@ public class InputHandler implements InputProcessor {
             spacecraft.goBack();
             return true;
         } else if(keycode == Input.Keys.SPACE){
-            spacecraft.shoot();
+            spacecraft.shoot(screen.getScrollHandler());
             return true;
         }
 
@@ -96,6 +96,7 @@ public class InputHandler implements InputProcessor {
             case GAMEOVER:
                 screen.reset();
                 break;
+
         }
 
         return true;

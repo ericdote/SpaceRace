@@ -24,6 +24,7 @@ public class Spacecraft extends Actor {
     private int width, height;
     private int direction;
     private Stage stage;
+    private ScrollHandler scrollHandler;
 
     private Rectangle collisionRect;
 
@@ -153,11 +154,10 @@ public class Spacecraft extends Actor {
         return collisionRect;
     }
 
-    public void shoot() {
-        for (Actor actor : stage.getActors()
-             ) {
+    public void shoot(ScrollHandler scrollHandler) {
+        for (Actor actor : stage.getActors()) {
             if(actor.getName() != null && actor.getName().equalsIgnoreCase("spacecraft")){
-                stage.addActor(new Bala(actor.getX()+actor.getWidth(), actor.getY()+actor.getHeight()/2, 22, 20));
+                stage.addActor(new Bala(actor.getX()+actor.getWidth(), actor.getY()+actor.getHeight()/2, 22, 20, scrollHandler));
                 AssetManager.disparoBala.play();
                 break;
             }

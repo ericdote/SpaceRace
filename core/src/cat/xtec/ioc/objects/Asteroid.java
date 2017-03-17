@@ -75,7 +75,7 @@ public class Asteroid extends Scrollable {
         width = height = 34 * newSize;
         // La posició serà un valor aleatòri entre 0 i l'alçada de l'aplicació menys l'alçada
         position.y =  new Random().nextInt(Settings.GAME_HEIGHT - (int) height);
-
+        this.setVisible(true);
         assetAsteroid = r.nextInt(15);
         this.velocitiY = -50 + r.nextInt(100);
         setOrigin();
@@ -97,4 +97,16 @@ public class Asteroid extends Scrollable {
         }
         return false;
     }
+
+
+
+    public boolean collidesBala(Bala bala) {
+
+            return (Intersector.overlaps(collisionCircle, bala.getBalaCollision()));
+
+    }
+
+
+
+
 }

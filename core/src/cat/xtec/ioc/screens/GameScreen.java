@@ -7,6 +7,7 @@ import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
 import java.util.ArrayList;
@@ -14,6 +15,7 @@ import java.util.ArrayList;
 import cat.xtec.ioc.helpers.AssetManager;
 import cat.xtec.ioc.helpers.InputHandler;
 import cat.xtec.ioc.objects.Asteroid;
+import cat.xtec.ioc.objects.Bala;
 import cat.xtec.ioc.objects.ScrollHandler;
 import cat.xtec.ioc.objects.Spacecraft;
 import cat.xtec.ioc.utils.Settings;
@@ -38,15 +40,25 @@ public class GameScreen implements Screen {
     private ShapeRenderer shapeRenderer;
     private Batch batch;
 
+    /*
+
+        facil = new GlyphLayout();
+        facil.setText(AssetManager.font, "Facil");
+        medio = new GlyphLayout();
+        medio.setText(AssetManager.font, "Medio");
+        dificil = new GlyphLayout();
+        dificil.setText(AssetManager.font, "Dificil");
+        AssetManager.font.draw(batch, facil, Settings.GAME_WIDTH/2-20, 30);
+        AssetManager.font.draw(batch, medio, Settings.GAME_WIDTH/2-20, 60);
+        AssetManager.font.draw(batch, dificil, Settings.GAME_WIDTH/2-20, 90);
+     */
+
     // Per controlar l'animació de l'explosió
     private float explosionTime = 0;
 
     // Preparem el textLayout per escriure text
     private GlyphLayout textLayout;
     private GlyphLayout puntuacio;
-    private GlyphLayout facil;
-    private GlyphLayout medio;
-    private GlyphLayout dificil;
     private int puntuacioJoc;
 
     public GameScreen(Batch prevBatch, Viewport prevViewport) {
@@ -75,12 +87,7 @@ public class GameScreen implements Screen {
         // Iniciem el GlyphLayout
         textLayout = new GlyphLayout();
         textLayout.setText(AssetManager.font, "Are you ready?");
-        facil = new GlyphLayout();
-        facil.setText(AssetManager.font, "Facil");
-        medio = new GlyphLayout();
-        medio.setText(AssetManager.font, "Medio");
-        dificil = new GlyphLayout();
-        dificil.setText(AssetManager.font, "Dificil");
+
         puntuacio = new GlyphLayout();
         puntuacioJoc = 0;
         currentState = GameState.READY;
@@ -169,9 +176,7 @@ public class GameScreen implements Screen {
         // Dibuixem el text al centre de la pantalla
         batch.begin();
         AssetManager.font.draw(batch, textLayout, 50, 2);
-        AssetManager.font.draw(batch, facil, Settings.GAME_WIDTH/2-20, 30);
-        AssetManager.font.draw(batch, medio, Settings.GAME_WIDTH/2-20, 60);
-        AssetManager.font.draw(batch, dificil, Settings.GAME_WIDTH/2-20, 90);
+
         //stage.addActor(textLbl);
         batch.end();
 
@@ -183,7 +188,7 @@ public class GameScreen implements Screen {
         puntuacio.setText(AssetManager.fontPuntuacio, "Puntuacion : " + puntuacioJoc++);
         AssetManager.fontPuntuacio.draw(batch, puntuacio, Settings.GAME_WIDTH-80, 2);
 
-        if (scrollHandler.collides(spacecraft)) {
+        /*if (scrollHandler.collides(spacecraft)) {
             // Si hi ha hagut col·lisió: Reproduïm l'explosió i posem l'estat a GameOver
             String mostraPuntuacio = Integer.toString(puntuacioJoc);
             puntuacioJoc = 0;
@@ -192,7 +197,7 @@ public class GameScreen implements Screen {
             textLayout.setText(AssetManager.font, "Game Over\n" +
                     "Puntuacion final : " + mostraPuntuacio);
             currentState = GameState.GAMEOVER;
-        }
+        }*/
         batch.end();
     }
 

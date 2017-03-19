@@ -35,7 +35,7 @@ public class ScrollHandler extends Group {
         r = new Random();
 
         // Comencem amb 3 asteroids
-        numAsteroids = 3;
+        numAsteroids = 5;
 
         // Creem l'ArrayList
         asteroids = new ArrayList<Asteroid>();
@@ -44,7 +44,7 @@ public class ScrollHandler extends Group {
         float newSize = Methods.randomFloat(Settings.MIN_ASTEROID, Settings.MAX_ASTEROID) * 34;
 
         // Afegim el primer Asteroid a l'Array i al grup
-        Asteroid asteroid = new Asteroid(Settings.GAME_WIDTH, r.nextInt(Settings.GAME_HEIGHT - (int) newSize), newSize, newSize, Settings.ASTEROID_SPEED, -50 + r.nextInt(100));
+        Asteroid asteroid = new Asteroid(Settings.GAME_WIDTH, r.nextInt(Settings.GAME_HEIGHT - (int) newSize), newSize, newSize, Settings.ASTEROID_SPEED, -50 + r.nextInt(100), true);
         asteroids.add(asteroid);
         addActor(asteroid);
 
@@ -53,7 +53,7 @@ public class ScrollHandler extends Group {
             // Creem la mida al·leatòria
             newSize = Methods.randomFloat(Settings.MIN_ASTEROID, Settings.MAX_ASTEROID) * 34;
             // Afegim l'asteroid.
-            asteroid = new Asteroid(asteroids.get(asteroids.size() - 1).getTailX() + Settings.ASTEROID_GAP, r.nextInt(Settings.GAME_HEIGHT - (int) newSize), newSize, newSize, Settings.ASTEROID_SPEED, -50 + r.nextInt(100));
+            asteroid = new Asteroid(asteroids.get(asteroids.size() - 1).getTailX() + Settings.ASTEROID_GAP, r.nextInt(Settings.GAME_HEIGHT - (int) newSize), newSize, newSize, Settings.ASTEROID_SPEED, -50 + r.nextInt(100), true);
             // Afegim l'asteroide a l'ArrayList
             asteroids.add(asteroid);
             // Afegim l'asteroide al grup d'actors
@@ -91,7 +91,7 @@ public class ScrollHandler extends Group {
 
         // Comprovem les col·lisions entre cada asteroid i la nau
         for (Asteroid asteroid : asteroids) {
-            if (asteroid.collides(nau)) {
+            if (asteroid.collides(nau) && asteroid.isContact()) {
                 return true;
             }
         }
@@ -112,5 +112,13 @@ public class ScrollHandler extends Group {
 
     public ArrayList<Asteroid> getAsteroids() {
         return asteroids;
+    }
+
+    public int getNumAsteroids() {
+        return numAsteroids;
+    }
+
+    public void setNumAsteroids(int numAsteroids) {
+        this.numAsteroids = numAsteroids;
     }
 }

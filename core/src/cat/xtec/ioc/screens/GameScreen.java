@@ -11,6 +11,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
 import java.util.ArrayList;
+import java.util.Set;
 
 import cat.xtec.ioc.helpers.AssetManager;
 import cat.xtec.ioc.helpers.InputHandler;
@@ -40,19 +41,6 @@ public class GameScreen implements Screen {
     private ShapeRenderer shapeRenderer;
     private Batch batch;
 
-    /*
-
-        facil = new GlyphLayout();
-        facil.setText(AssetManager.font, "Facil");
-        medio = new GlyphLayout();
-        medio.setText(AssetManager.font, "Medio");
-        dificil = new GlyphLayout();
-        dificil.setText(AssetManager.font, "Dificil");
-        AssetManager.font.draw(batch, facil, Settings.GAME_WIDTH/2-20, 30);
-        AssetManager.font.draw(batch, medio, Settings.GAME_WIDTH/2-20, 60);
-        AssetManager.font.draw(batch, dificil, Settings.GAME_WIDTH/2-20, 90);
-     */
-
     // Per controlar l'animació de l'explosió
     private float explosionTime = 0;
 
@@ -61,10 +49,22 @@ public class GameScreen implements Screen {
     private GlyphLayout puntuacio;
     private int puntuacioJoc;
 
-    public GameScreen(Batch prevBatch, Viewport prevViewport) {
+    public GameScreen(Batch prevBatch, Viewport prevViewport, String dificulty) {
 
         // Iniciem la música
         AssetManager.music.play();
+
+        if(dificulty.equals("facil")) {
+            Settings.ASTEROID_GAP += 10;
+            Settings.SPACECRAFT_VELOCITY += 30;
+        } else if (dificulty.equals("medio")){
+            Settings.ASTEROID_SPEED -= 50;
+            Settings.SPACECRAFT_VELOCITY += 10;
+            Settings.ASTEROID_GAP -= 20;
+        } else if (dificulty.equals("dificil")){
+            Settings.ASTEROID_GAP -= 50;
+            Settings.ASTEROID_SPEED -= 40;
+        }
 
         // Creem el ShapeRenderer
         shapeRenderer = new ShapeRenderer();
@@ -188,7 +188,7 @@ public class GameScreen implements Screen {
         puntuacio.setText(AssetManager.fontPuntuacio, "Puntuacion : " + puntuacioJoc++);
         AssetManager.fontPuntuacio.draw(batch, puntuacio, Settings.GAME_WIDTH-80, 2);
 
-        /*if (scrollHandler.collides(spacecraft)) {
+        if (scrollHandler.collides(spacecraft)) {
             // Si hi ha hagut col·lisió: Reproduïm l'explosió i posem l'estat a GameOver
             String mostraPuntuacio = Integer.toString(puntuacioJoc);
             puntuacioJoc = 0;
@@ -197,7 +197,7 @@ public class GameScreen implements Screen {
             textLayout.setText(AssetManager.font, "Game Over\n" +
                     "Puntuacion final : " + mostraPuntuacio);
             currentState = GameState.GAMEOVER;
-        }*/
+        }
         batch.end();
     }
 
@@ -217,7 +217,7 @@ public class GameScreen implements Screen {
     public void reset() {
 
         // Posem el text d'inici
-        textLayout.setText(AssetManager.font, "Are you\nready?");
+        textLayout.setText(AssetManager.font, "Are you ready?");
         // Cridem als restart dels elements.
         spacecraft.reset();
         scrollHandler.reset();

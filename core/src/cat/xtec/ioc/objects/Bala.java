@@ -40,7 +40,7 @@ public class Bala extends Actor{
     @Override
     public void act(float delta) {
         super.act(delta);
-        this.position.x += 60*delta;
+        this.position.x += 400*delta;
         balaCollision.set(position.x, position.y, width, height+2);
         colisionBalaAsteroide(scrollHandler.getAsteroids());
     }
@@ -57,6 +57,7 @@ public class Bala extends Actor{
                 Gdx.app.log("Colision", "colision");
                 this.remove();
                 asteroid.setVisible(false);
+                asteroid.setContact(false);
                 //asteroid.collides(); //QUE DEJE DE COLISIONAR
 
                 return true;

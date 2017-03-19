@@ -4,12 +4,15 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.GlyphLayout;
+import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.scenes.scene2d.actions.RepeatAction;
 import com.badlogic.gdx.scenes.scene2d.ui.Container;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
+import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
+import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
 
 import cat.xtec.ioc.SpaceRace;
@@ -21,15 +24,18 @@ public class MenuScreen implements Screen {
 
     private Stage stage;
     private SpaceRace game;
-    private boolean touch = false;
+    private boolean touch;
     private Label.LabelStyle textStyle;
-    private Label facil;
-    private Label medio;
-    private Label dificil;
+    private TextButton facil, medio, dificil;
+    private TextButton.TextButtonStyle textButtonStyle;
 
     public MenuScreen(SpaceRace game) {
 
+        textButtonStyle = new TextButton.TextButtonStyle();
+        textButtonStyle.font = AssetManager.font;
         this.game = game;
+
+        touch = false;
 
         // Creem la càmera de les dimensions del joc
         OrthographicCamera camera = new OrthographicCamera(Settings.GAME_WIDTH, Settings.GAME_HEIGHT);
@@ -54,10 +60,9 @@ public class MenuScreen implements Screen {
         stage.addActor(spacecraft);
 
         // Creem l'estil de l'etiqueta i l'etiqueta
-        textStyle = new Label.LabelStyle(AssetManager.font, null);
-        facil = new Label("Facil", textStyle);
-        medio = new Label("Medio", textStyle);
-        dificil = new Label("Dificil", textStyle);
+        facil = new TextButton("Facil", textButtonStyle);
+        medio = new TextButton("Medio", textButtonStyle);
+        dificil = new TextButton("Dificil", textButtonStyle);
 
         // Creem el contenidor necessari per aplicar-li les accions
         Container containerFacil = new Container(facil);
@@ -77,8 +82,31 @@ public class MenuScreen implements Screen {
         stage.addActor(containerMedio);
         stage.addActor(containerDificil);
 
+        facil.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                MenuScreen.this.game.setScreen(new GameScreen(MenuScreen.this.stage.getBatch(), MenuScreen.this.stage.getViewport(), "facil"));
+                dispose();
+            }
+        });
 
+        medio.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                MenuScreen.this.game.setScreen(new GameScreen(MenuScreen.this.stage.getBatch(), MenuScreen.this.stage.getViewport(), "medio"));
+                dispose();
+            }
+        });
 
+        dificil.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                MenuScreen.this.game.setScreen(new GameScreen(MenuScreen.this.stage.getBatch(), MenuScreen.this.stage.getViewport(), "dificil"));
+                dispose();
+            }
+        });
+
+        Gdx.input.setInputProcessor(stage);
     }
 
     @Override
@@ -92,14 +120,6 @@ public class MenuScreen implements Screen {
         stage.draw();
         stage.act(delta);
 
-        // Si es fa clic en la pantalla, canviem la pantalla
-        if (Gdx.input.isTouched() && touch == true) {
-            game.setScreen(new GameScreen(stage.getBatch(), stage.getViewport()));
-            dispose();
-        } else {
-            touch = false;
-        }
-        //gdxinput.x
     }
 
     @Override

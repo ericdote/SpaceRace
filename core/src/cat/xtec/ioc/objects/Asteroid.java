@@ -20,13 +20,14 @@ public class Asteroid extends Scrollable {
 
     int assetAsteroid;
     float velocitiY;
+    boolean contact;
 
-    public Asteroid(float x, float y, float width, float height, float velocity, float velocitiY) {
+    public Asteroid(float x, float y, float width, float height, float velocity, float velocitiY, boolean contact) {
         super(x, y, width, height, velocity);
         this.velocitiY = velocitiY;
         // Creem el cercle
         collisionCircle = new Circle();
-
+        this.contact = contact;
         /* Accions */
         r = new Random();
         assetAsteroid = r.nextInt(15);
@@ -76,6 +77,7 @@ public class Asteroid extends Scrollable {
         // La posició serà un valor aleatòri entre 0 i l'alçada de l'aplicació menys l'alçada
         position.y =  new Random().nextInt(Settings.GAME_HEIGHT - (int) height);
         this.setVisible(true);
+        this.setContact(true);
         assetAsteroid = r.nextInt(15);
         this.velocitiY = -50 + r.nextInt(100);
         setOrigin();
@@ -101,12 +103,19 @@ public class Asteroid extends Scrollable {
 
 
     public boolean collidesBala(Bala bala) {
-
-            return (Intersector.overlaps(collisionCircle, bala.getBalaCollision()));
-
+            if(this.isContact()) {
+                return (Intersector.overlaps(collisionCircle, bala.getBalaCollision()));
+            } else {
+                return false;
+            }
     }
 
 
+    public boolean isContact() {
+        return contact;
+    }
 
-
+    public void setContact(boolean contact) {
+        this.contact = contact;
+    }
 }

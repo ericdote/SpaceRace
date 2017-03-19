@@ -8,6 +8,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 
 public class AssetManager {
 
@@ -33,6 +34,7 @@ public class AssetManager {
 
     // Font
     public static BitmapFont font;
+    public static TextButton.TextButtonStyle style;
     public static BitmapFont fontPuntuacio;
 
     public static void load() {
@@ -105,6 +107,7 @@ public class AssetManager {
         font.getData().setScale(0.4f);
         fontPuntuacio = new BitmapFont(fontFile, true);
         fontPuntuacio.getData().setScale(0.2f);
+        style = new TextButton.TextButtonStyle();
 
 
     }

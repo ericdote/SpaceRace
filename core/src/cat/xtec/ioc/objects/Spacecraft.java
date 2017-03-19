@@ -90,28 +90,19 @@ public class Spacecraft extends Actor {
     // Canviem la direcció de la spacecraft: Puja
     public void goUp() {
         direction = SPACECRAFT_UP;
-        velocityY = -Settings.SPACECRAFT_VELOCITY;
     }
 
     // Canviem la direcció de la spacecraft: Baixa
     public void goDown() {
         direction = SPACECRAFT_DOWN;
-        velocityY = Settings.SPACECRAFT_VELOCITY;
     }
 
     // Posem la spacecraft al seu estat original
     public void goStraight() {
 
         direction = SPACECRAFT_STRAIGHT;
-        velocityX = Settings.SPACECRAFT_VELOCITY_X;
     }
 
-    public void goBack()
-    {
-        direction = SPACECRAFT_STRAIGHT;
-        velocityX = - Settings.SPACECRAFT_VELOCITY_X;
-
-    }
     public void pause()
 
     {

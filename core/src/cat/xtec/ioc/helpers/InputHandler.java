@@ -18,6 +18,7 @@ public class InputHandler implements InputProcessor {
     private Spacecraft spacecraft;
     private GameScreen screen;
     private Vector2 stageCoord;
+    private InputHandler inputHandler;
 
     private Stage stage;
 
@@ -32,44 +33,32 @@ public class InputHandler implements InputProcessor {
 
     @Override
     public boolean keyDown(int keycode) {
-        if (keycode == Input.Keys.UP && keycode != Input.Keys.DOWN)
-        {
+        if (keycode == Input.Keys.UP && keycode != Input.Keys.DOWN) {
             spacecraft.goUp();
             return true;
-        }
-        else if (keycode == Input.Keys.DOWN && keycode != Input.Keys.UP)
-        {
+        } else if (keycode == Input.Keys.DOWN && keycode != Input.Keys.UP) {
             spacecraft.goDown();
             return true;
-        }
-        else if (keycode == Input.Keys.RIGHT && keycode != Input.Keys.LEFT)
-        {
+        } else if (keycode == Input.Keys.RIGHT && keycode != Input.Keys.LEFT) {
             spacecraft.goStraight();
             return true;
-        }
-        else if (keycode == Input.Keys.LEFT && keycode != Input.Keys.RIGHT)
-        {
-            spacecraft.goBack();
-            return true;
-        } else if(keycode == Input.Keys.SPACE){
+        } else if (keycode == Input.Keys.SPACE) {
             spacecraft.shoot(screen.getScrollHandler());
             return true;
-        }
-
-        else
-        {
+        } else {
             spacecraft.pause();
             return true;
         }
 
 
-
     }
+
     @Override
     public boolean keyUp(int keycode) {
         spacecraft.pause();
         return true;
     }
+
     @Override
     public boolean keyTyped(char character) {
         return false;
@@ -89,8 +78,12 @@ public class InputHandler implements InputProcessor {
 
                 stageCoord = stage.screenToStageCoordinates(new Vector2(screenX, screenY));
                 Actor actorHit = stage.hit(stageCoord.x, stageCoord.y, true);
-                if (actorHit != null)
+                if (actorHit != null) {
                     Gdx.app.log("HIT", actorHit.getName());
+                } else {
+                    spacecraft.shoot(screen.getScrollHandler());
+                }
+
                 break;
             // Si l'estat és GameOver tornem a iniciar el joc
             case GAMEOVER:
